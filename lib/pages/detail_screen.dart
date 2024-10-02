@@ -9,11 +9,9 @@ class DetailScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // Format the date for display
     final formattedDate =
         DateFormat('dd MMMM yyyy').format(waterIntakeModel.date);
 
-    // Derived properties: remaining water and goal met status
     final remaining = waterIntakeModel.dailyGoal - waterIntakeModel.consumed;
     final isGoalMet = waterIntakeModel.consumed >= waterIntakeModel.dailyGoal;
 
@@ -66,8 +64,6 @@ class DetailScreen extends StatelessWidget {
                   style: const TextStyle(fontSize: 16, color: Colors.black87),
                 ),
                 const Divider(height: 20, thickness: 1),
-
-                // Show intake history if it exists
                 if (waterIntakeModel.intakeHistory.isNotEmpty)
                   Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
@@ -83,11 +79,9 @@ class DetailScreen extends StatelessWidget {
                       const SizedBox(height: 10),
                       Column(
                         children: waterIntakeModel.intakeHistory.map((intake) {
-                          // Safely access 'time' and 'amount' from the intake history
                           final timeString = intake['time'];
                           final amount = intake['amount'];
 
-                          // If time or amount is null, display a fallback message
                           if (timeString == null || amount == null) {
                             return const Padding(
                               padding: EdgeInsets.symmetric(vertical: 5),
@@ -101,7 +95,6 @@ class DetailScreen extends StatelessWidget {
                             );
                           }
 
-                          // Try parsing the time safely
                           DateTime? timestamp;
                           try {
                             timestamp = DateTime.parse(timeString);
@@ -145,8 +138,6 @@ class DetailScreen extends StatelessWidget {
                       ),
                     ],
                   ),
-
-                // If there's no intake history, show this message
                 if (waterIntakeModel.intakeHistory.isEmpty)
                   const Text(
                     "No water intake recorded for this day.",

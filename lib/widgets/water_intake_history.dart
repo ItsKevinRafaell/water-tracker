@@ -13,7 +13,7 @@ class WaterIntakeHistory extends StatelessWidget {
     return Expanded(
       child: ListView.builder(
         padding: const EdgeInsets.all(16.0),
-        itemCount: waterIntakeHistory.length - 1, // Remove the newest entry
+        itemCount: waterIntakeHistory.length - 1,
         itemBuilder: (context, index) {
           final intake = waterIntakeHistory[index];
           return _buildHistoryCard(context, intake);
@@ -89,7 +89,6 @@ class WaterIntakeHistory extends StatelessWidget {
                   const SizedBox(height: 12),
                   ElevatedButton(
                     onPressed: () {
-                      // Pass the specific intake to DetailScreen
                       Navigator.push(context,
                           MaterialPageRoute(builder: (context) {
                         return DetailScreen(waterIntakeModel: intake);

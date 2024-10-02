@@ -1,8 +1,8 @@
 class WaterIntakeModel {
-  final DateTime date; // This should be serialized to a String
+  final DateTime date;
   double dailyGoal;
   double consumed;
-  List<Map<String, dynamic>> intakeHistory; // Should be a List of Maps
+  List<Map<String, dynamic>> intakeHistory;
 
   WaterIntakeModel({
     required this.date,
@@ -17,11 +17,10 @@ class WaterIntakeModel {
 
   Map<String, dynamic> toJson() {
     return {
-      'date': date.toIso8601String(), // Correctly converts DateTime to String
+      'date': date.toIso8601String(),
       'dailyGoal': dailyGoal,
       'consumed': consumed,
-      'intakeHistory':
-          intakeHistory, // Ensure all items are Map<String, dynamic>
+      'intakeHistory': intakeHistory,
     };
   }
 
@@ -36,7 +35,6 @@ class WaterIntakeModel {
   }
 }
 
-// Function to generate dummy data
 List<WaterIntakeModel> generateDummyData() {
   return List<WaterIntakeModel>.generate(10, (index) {
     return WaterIntakeModel(

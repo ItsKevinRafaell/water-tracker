@@ -49,14 +49,12 @@ class _WaterIntakeTrackerState extends State<WaterIntakeTracker>
     setState(() {});
   }
 
-  // Helper method to check if two dates are the same day
   bool _isSameDay(DateTime date1, DateTime date2) {
     return date1.year == date2.year &&
         date1.month == date2.month &&
         date1.day == date2.day;
   }
 
-  // Function to show a dialog to edit the daily goal
   Future<void> _showEditGoalDialog(BuildContext context) async {
     TextEditingController goalController =
         TextEditingController(text: dailyGoal.toString());
@@ -85,12 +83,11 @@ class _WaterIntakeTrackerState extends State<WaterIntakeTracker>
                 if (newGoal != null && newGoal > 0) {
                   setState(() {
                     dailyGoal = newGoal;
-                    _updateDailyGoalForToday(newGoal); // Update today's entry
-                    _saveDailyGoal(newGoal); // Save the updated goal
+                    _updateDailyGoalForToday(newGoal);
+                    _saveDailyGoal(newGoal);
                   });
                   Navigator.of(context).pop();
                 } else {
-                  // Show an error if the input is invalid
                   ScaffoldMessenger.of(context).showSnackBar(
                     const SnackBar(
                         content: Text("Please enter a valid number.")),
@@ -105,17 +102,14 @@ class _WaterIntakeTrackerState extends State<WaterIntakeTracker>
     );
   }
 
-  // Function to update the daily goal for today's entry in waterIntakeHistory
   void _updateDailyGoalForToday(double newGoal) {
     DateTime today = DateTime.now();
-    // Check if the last entry is for today and update its daily goal
     if (_isSameDay(waterIntakeHistory.last.date, today)) {
-      waterIntakeHistory.last.dailyGoal = newGoal; // Update today's goal
-      saveWaterIntakeHistory(); // Save the updated history to SharedPreferences
+      waterIntakeHistory.last.dailyGoal = newGoal;
+      saveWaterIntakeHistory();
     }
   }
 
-  // Function to save the updated daily goal using SharedPreferences
   Future<void> _saveDailyGoal(double goal) async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     bool isSaved = await prefs.setDouble('dailyGoal', goal);
@@ -156,7 +150,6 @@ class _WaterIntakeTrackerState extends State<WaterIntakeTracker>
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Column(
-              // mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Text(
                   "Kebutuhan Air Harian: ${todayIntake.dailyGoal} ml",
@@ -169,7 +162,7 @@ class _WaterIntakeTrackerState extends State<WaterIntakeTracker>
                 IconButton(
                   icon: const Icon(Icons.edit, color: Colors.blueAccent),
                   onPressed: () {
-                    _showEditGoalDialog(context); // Trigger the edit dialog
+                    _showEditGoalDialog(context);
                   },
                 ),
               ],
@@ -198,7 +191,7 @@ class _WaterIntakeTrackerState extends State<WaterIntakeTracker>
                   Expanded(
                     child: ElevatedButton.icon(
                       onPressed: () {
-                        updateIntake(150); // Add 150 ml water intake
+                        updateIntake(150);
                       },
                       style: ElevatedButton.styleFrom(
                         backgroundColor: Colors.blueAccent,
@@ -226,8 +219,7 @@ class _WaterIntakeTrackerState extends State<WaterIntakeTracker>
                       onPressed: () {
                         Navigator.push(context,
                             MaterialPageRoute(builder: (context) {
-                          return DetailScreen(
-                              waterIntakeModel: todayIntake); // Show history
+                          return DetailScreen(waterIntakeModel: todayIntake);
                         }));
                       },
                       style: ElevatedButton.styleFrom(
@@ -266,7 +258,7 @@ class _WaterIntakeTrackerState extends State<WaterIntakeTracker>
         'amount': amount,
         'time': DateTime.now().toIso8601String(),
       });
-      saveWaterIntakeHistory(); // Save updated history
+      saveWaterIntakeHistory();
     });
   }
 
@@ -274,15 +266,13 @@ class _WaterIntakeTrackerState extends State<WaterIntakeTracker>
     SharedPreferences prefs = await SharedPreferences.getInstance();
     List<String> encodedHistory =
         waterIntakeHistory.map((item) => jsonEncode(item.toJson())).toList();
-    await prefs.setStringList(
-        'waterIntakeHistory', encodedHistory); // Persist history
+    await prefs.setStringList('waterIntakeHistory', encodedHistory);
     print('Data history berhasil disimpan');
   }
 
   @override
   void didChangeAppLifecycleState(AppLifecycleState state) {
     if (state == AppLifecycleState.paused) {
-      // Simpan data saat aplikasi di-pause
       saveWaterIntakeHistory();
     }
   }

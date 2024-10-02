@@ -12,7 +12,7 @@ class HomeScreen extends StatelessWidget {
 
   Future<double> loadDailyGoalFromPrefs() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
-    return prefs.getDouble('dailyGoal') ?? 2000; // Default value is 2000ml
+    return prefs.getDouble('dailyGoal') ?? 2000;
   }
 
   Future<void> saveWaterIntakeHistory(List<WaterIntakeModel> history) async {
@@ -44,13 +44,11 @@ class HomeScreen extends StatelessWidget {
           children: [
             const Greet(),
             const SpaceWidget(),
-
-            // Use FutureBuilder to load the daily goal
             FutureBuilder<double>(
               future: loadDailyGoalFromPrefs(),
               builder: (context, snapshot) {
                 if (snapshot.connectionState == ConnectionState.waiting) {
-                  return const CircularProgressIndicator(); // Show loading indicator
+                  return const CircularProgressIndicator();
                 } else if (snapshot.hasError) {
                   return const Text("Error loading daily goal.");
                 } else {
@@ -61,16 +59,12 @@ class HomeScreen extends StatelessWidget {
                 }
               },
             ),
-
             const SpaceWidget(),
             const SizedBox(height: 20),
-
             const Text(
               "Riwayat",
               style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
             ),
-
-            // Use FutureBuilder to load the water intake history
             Expanded(
               child: WaterIntakeHistory(waterIntakeHistory: dummyData),
             ),
